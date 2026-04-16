@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veda // Dev Seeder</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;900&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a0e1a;--accent:#4d9fff;--teal:#00d4aa;--silver:#8899bb;--text:#ddeeff;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:radial-gradient(ellipse at 20% 50%,rgba(77,159,255,.06) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 20%,rgba(0,212,170,.05) 0%,transparent 50%),#0a0e1a;
+  color:var(--text);font-family:'DM Mono',monospace;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:20px;
+}
+.card{
+  width:min(640px,100%);
+  background:linear-gradient(145deg,rgba(15,21,40,.98),rgba(10,14,26,.99));
+  border:1px solid rgba(77,159,255,.3);border-radius:20px;overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,.6);
+}
+.hdr{
+  background:linear-gradient(135deg,rgba(77,159,255,.12),rgba(0,212,170,.08));
+  border-bottom:1px solid rgba(77,159,255,.2);padding:24px 28px;position:relative;
+}
+.hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),var(--teal),transparent);}
+.logo{font-size:1.4rem;font-weight:900;letter-spacing:4px;
+  background:linear-gradient(135deg,#4d9fff,#00d4aa);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;}
+.tag{font-size:.63rem;color:var(--teal);letter-spacing:2.5px;text-transform:uppercase;margin-top:3px;}
+.body{padding:24px 28px;display:flex;flex-direction:column;gap:18px;}
+.note{
+  font-size:.75rem;color:var(--silver);background:rgba(0,212,170,.05);
+  border:1px solid rgba(0,212,170,.18);border-radius:10px;padding:12px 14px;line-height:1.7;
+}
+.note strong{color:var(--teal);}
+.step{display:flex;gap:14px;align-items:flex-start;}
+.step-num{
+  width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--teal));
+  display:flex;align-items:center;justify-content:center;font-size:.73rem;font-weight:700;
+  flex-shrink:0;color:#fff;margin-top:2px;
+}
+.step-body{flex:1;}
+.step-title{font-size:.85rem;color:var(--text);margin-bottom:4px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;}
+.step-desc{font-size:.74rem;color:var(--silver);line-height:1.7;margin-bottom:10px;}
+.bookmarklet-wrap{
+  background:rgba(77,159,255,.06);border:2px dashed rgba(77,159,255,.3);border-radius:10px;
+  padding:16px;display:flex;align-items:center;gap:14px;
+}
+#bm-link{
+  display:inline-block;padding:9px 18px;
+  background:linear-gradient(135deg,var(--accent),var(--teal));
+  border-radius:8px;color:#fff;font-size:.72rem;font-weight:700;letter-spacing:1.5px;
+  text-decoration:none;white-space:nowrap;cursor:grab;user-select:none;
+  font-family:'DM Mono',monospace;
+}
+.drag-hint{font-size:.7rem;color:var(--silver);margin-top:6px;line-height:1.5;}
+.code-wrap{position:relative;}
+.code-block{
+  background:rgba(5,8,18,.85);border:1px solid rgba(77,159,255,.2);border-radius:10px;
+  padding:14px 16px;padding-right:70px;font-size:.68rem;color:#a8c8ff;line-height:1.6;
+  max-height:100px;overflow:auto;word-break:break-all;white-space:pre-wrap;
+  font-family:'DM Mono',monospace;
+}
+.copy-btn{
+  position:absolute;top:8px;right:8px;
+  background:rgba(77,159,255,.15);border:1px solid rgba(77,159,255,.3);border-radius:7px;
+  padding:5px 10px;color:var(--accent);font-family:'DM Mono',monospace;font-size:.65rem;
+  cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.copy-btn:hover{background:rgba(77,159,255,.3);}
+.copy-btn.ok{color:var(--teal);border-color:var(--teal);}
+.divider{height:1px;background:rgba(77,159,255,.1);}
+.open-link{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px;background:linear-gradient(135deg,var(--accent),var(--teal));
+  border:none;border-radius:12px;color:#fff;font-family:'DM Mono',monospace;
+  font-size:.7rem;font-weight:700;letter-spacing:2px;cursor:pointer;
+  text-decoration:none;transition:all .2s;
+}
+.open-link:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(77,159,255,.3);}
+.seeds{
+  background:rgba(5,8,18,.5);border:1px solid rgba(77,159,255,.13);border-radius:10px;
+  padding:14px 16px;
+}
+.seeds-title{font-size:.62rem;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.si{font-size:.74rem;color:var(--silver);padding:3px 0;line-height:1.6;}
+.si strong{color:var(--text);}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="hdr">
+    <div class="logo">VEDA</div>
+    <div class="tag">// Dev Seeder — runs directly on veda-net.com</div>
+  </div>
+  <div class="body">
+
+    <div class="note">
+      <strong>Why a separate seeder page didn't work:</strong> browsers isolate <code>localStorage</code> per domain, so writing from another page has zero effect on veda-net.com. The methods below run the seed script <em>on veda-net.com itself</em>.
+    </div>
+
+    <!-- BOOKMARKLET -->
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Bookmarklet — easiest method</div>
+        <div class="step-desc">
+          Drag the button below into your browser's <strong>bookmarks bar</strong>. 
+          Then navigate to <strong>veda-net.com</strong> and click it — data is seeded immediately with no console needed.
+        </div>
+        <div class="bookmarklet-wrap">
+          <a id="bm-link" href="#" onclick="return false;">⚡ Seed Veda Dev Data</a>
+          <div class="drag-hint">☝️ Drag this into your bookmarks bar,<br>then click it while on veda-net.com</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- CONSOLE PASTE -->
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Console paste — alternative</div>
+        <div class="step-desc">
+          Open <strong>veda-net.com</strong>, press <code>F12</code> (or <code>Cmd+Option+J</code> on Mac), 
+          click the <strong>Console</strong> tab, paste the code and press Enter.
+        </div>
+        <div class="code-wrap">
+          <div class="code-block" id="code-preview">generating...</div>
+          <button class="copy-btn" id="copy-btn" onclick="copyIt()">Copy all</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <a href="https://veda-net.com" target="_blank" class="open-link">🚀 Open veda-net.com →</a>
+
+    <div class="seeds">
+      <div class="seeds-title">// What gets seeded</div>
+      <div class="si">👤 <strong>Profile</strong> — "Aisha", 💎 847 gems, 14-day streak, Level 8, all badges unlocked</div>
+      <div class="si">🎮 <strong>Game scores</strong> — Bubble:73, Scramble:18, Maths:34, Typing:87 WPM, Reaction:214ms, Snake:420, Flags:22, Sudoku:950</div>
+      <div class="si">📓 <strong>Journal</strong> — 12 entries over 3 weeks, mixed moods, genuine student writing</div>
+      <div class="si">💬 <strong>Companion chat</strong> — 10-message history (study help + emotional support)</div>
+      <div class="si">✅ <strong>To-Do list</strong> — 8 tasks, 5 completed, 3 pending</div>
+      <div class="si">🎯 <strong>Goals &amp; activity</strong> — 5 goals, 14-day log, pre-filled quick note</div>
+      <div class="si">⚙️ <strong>Settings</strong> — onboarded, all 13 tabs visited, 3 Spotify playlists</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────
+// Build the seed payload as a self-contained IIFE string
+// This runs entirely on veda-net.com's own page context
+// ─────────────────────────────────────────
+function makeSeedScript() {
+  // All data is serialised inline — no external fetches needed
+  const now = Date.now();
+
+  function sd(daysAgo) { // short local date string
+    const d = new Date(now - daysAgo * 86400000);
+    return d.toLocaleDateString('en-GB');
+  }
+
+  const account = {
+    name:'Aisha', avatar:'🎓', gems:847, streak:14, level:8, xp:3240,
+    stats:{ questions:94, notes:47, games:63, pomodoro:28, todoDone:31, tabsVisited:13 },
+    badges:['first_question','note_taker','gamer','streak_3','streak_7','streak_14','gem_50','gem_100','gem_500','pomodoro_5','todo_10','explorer','flashcard_master'],
+    shopOwned:{ theme_aurora:true, theme_galaxy:true, border_gold:true, border_purple:true },
+    joinDate: new Date(now - 45*86400000).toISOString()
+  };
+
+  const journal = [
+    { id:now-1,   date:sd(0),  time:'21:14', mood:'😤', moodLabel:'Stressed',   title:'Pre-exam anxiety is real',         text:"Physics exam is tomorrow and I honestly feel like I've forgotten everything. Went through the entire electricity chapter again tonight and it felt like I was reading it for the first time. The formulas just aren't sticking. Going to try the Veda flashcards for the last hour before bed and hope it clicks. At least I got through 3 past papers this week — that has to count for something." },
+    { id:now-2,   date:sd(1),  time:'18:30', mood:'😊', moodLabel:'Happy',      title:'Chemistry win 🎉',                  text:"Got my Chemistry coursework back and I got an A! I literally could not believe it when I saw the mark. Ms. Tan wrote 'excellent use of data and clear scientific reasoning' which made my whole week. Celebrated with bubble tea after school." },
+    { id:now-3,   date:sd(2),  time:'20:00', mood:'😴', moodLabel:'Tired',      title:'Running on empty',                  text:"Really drained today. Had football practice in the morning, three back-to-back classes, then tried to do a Pomodoro session but kept zoning out. Managed 25 minutes before I gave up. I think I need to start sleeping earlier. Took a break and came back to finish the biology notes at least." },
+    { id:now-4,   date:sd(4),  time:'17:45', mood:'🔥', moodLabel:'Motivated',  title:'In the zone — 4 hour session',      text:"Most productive session in ages. Started at 2pm, didn't stop until 6. Used the Pomodoro timer properly — four 25-minute blocks. Finished all history notes on the French Revolution AND started the practice essay. The Veda mind map feature is genuinely so good for this topic. 14-day streak feels incredible." },
+    { id:now-5,   date:sd(5),  time:'22:00', mood:'😐', moodLabel:'Meh',        title:'Meh kind of day',                   text:"Medium day. Got through the maths worksheet but it took twice as long as it should. Talked to Companion about staying focused — actually decent advice. Ate dinner too late and now it's 10pm and I still need to review my English annotations." },
+    { id:now-6,   date:sd(6),  time:'19:00', mood:'😊', moodLabel:'Happy',      title:'Library study + flag quiz wins',    text:"Went to the library with Priya and studied together for two hours. So much easier to stay focused with someone else there. Quizzed each other on the periodic table — I got 18/20 which is my best yet. Then we played Flag Quiz on Veda. I got 22 which is apparently a high score!" },
+    { id:now-7,   date:sd(8),  time:'21:30', mood:'😤', moodLabel:'Stressed',   title:'Three assessments incoming',        text:"Three assessments in one week. Made a to-do list in Veda with every task broken down — it helped me see it's manageable if I spread it out. Talked to Companion for a bit and it helped me calm down. Going to sleep instead of cramming tonight." },
+    { id:now-8,   date:sd(10), time:'16:20', mood:'🔥', moodLabel:'Motivated',  title:'Essay done and submitted ✓',        text:"English essay submitted! Spent about 6 hours across three days and I'm actually proud of how it turned out. Used Veda's essay plan tool to structure my arguments — saved so much time. Handed it in with an hour to spare." },
+    { id:now-9,   date:sd(12), time:'20:45', mood:'😊', moodLabel:'Happy',      title:'Two weeks in and loving it',        text:"Realised I've been using Veda every single day for two weeks now. It started as just a homework helper but I actually look forward to opening it. Streak is at 12 days. Setting a goal to hit 30." },
+    { id:now-10,  date:sd(14), time:'18:00', mood:'😴', moodLabel:'Tired',      title:'Rest day (needed it)',              text:"Revision is a marathon and I'm starting to feel it. Took a proper break today — no studying, just went for a walk and watched TV. Felt guilty the whole time but I think it was genuinely necessary. Rest is productive." },
+    { id:now-11,  date:sd(17), time:'21:00', mood:'🔥', moodLabel:'Motivated',  title:'93% on mock — new personal best!', text:"First ever 90+ on a mock paper! Got 93% on a Chemistry MCQ test. Honestly shocked myself. The flashcard sessions on Veda must be working because the recall felt almost automatic. Teacher said my explanations were 'detailed and well-structured'." },
+    { id:now-12,  date:sd(20), time:'17:00', mood:'😐', moodLabel:'Okay',       title:'Day 1 — new term, new goals',      text:"First journal entry! Decided to start tracking my moods and study days properly. Goal for this term: hit all my target grades, keep my streak going, and actually stay on top of homework instead of last-minute rushing." },
+  ];
+
+  const compHistory = [
+    { role:'user',  parts:[{text:"I'm feeling really overwhelmed with everything right now"}] },
+    { role:'model', parts:[{text:"That sounds genuinely exhausting — 'everything' at once is a lot. What's weighing on you most right now? Is it school stuff, or more life stuff in general?"}] },
+    { role:'user',  parts:[{text:"Mostly school, three assessments this week and I haven't slept properly in days"}] },
+    { role:'model', parts:[{text:"Three in one week is a lot, no wonder your brain's fried. Sleep deprivation makes studying way less effective — your brain consolidates memory during sleep, so cramming at midnight actually backfires. Is there any way to protect even 7 hours tonight?"}] },
+    { role:'user',  parts:[{text:"probably not but I'll try. can you help me with my history revision"}] },
+    { role:'model', parts:[{text:"Of course! What topic — and do you want me to quiz you, help you make a summary, or explain something that's not clicking?"}] },
+    { role:'user',  parts:[{text:"French Revolution, I need to know the causes for the essay"}] },
+    { role:'model', parts:[{text:"Great topic to nail — examiners love causes questions. The main ones: France's financial crisis after funding the American Revolution, the Estates system where 97% of the population paid taxes while nobility didn't, weak leadership from Louis XVI, and Enlightenment ideas about liberty. Want me to quiz you or build a mind map?"}] },
+    { role:'user',  parts:[{text:"quiz me!"}] },
+    { role:'model', parts:[{text:"Okay! Which war did France fund that left it nearly bankrupt — and why was that significant for the Revolution?"}] },
+  ];
+
+  const todos = [
+    { id:now-100, text:'Complete biology past papers (x3)',              done:true,  created:sd(5)  },
+    { id:now-101, text:'Submit English essay on Macbeth',                done:true,  created:sd(10) },
+    { id:now-102, text:'Review French Revolution notes',                 done:true,  created:sd(4)  },
+    { id:now-103, text:'Make Chemistry flashcards — bonding chapter',    done:true,  created:sd(3)  },
+    { id:now-104, text:'Pomodoro session: 4 blocks',                     done:true,  created:sd(1)  },
+    { id:now-105, text:'Revise electricity formulas for Physics exam',   done:false, created:sd(0)  },
+    { id:now-106, text:'Read chapters 5–7 for English lit',              done:false, created:sd(0)  },
+    { id:now-107, text:'Email Mr. Hassan about coursework deadline',     done:false, created:sd(1)  },
+  ];
+
+  const goals = [
+    { id:1, text:'Study at least 2 hours per day',      done:true  },
+    { id:2, text:'Complete all homework before 9pm',    done:true  },
+    { id:3, text:'Finish 3 past papers this week',      done:true  },
+    { id:4, text:'Keep streak above 14 days',           done:false },
+    { id:5, text:'Get above 80% on next mock',          done:false },
+  ];
+
+  // 14-day activity log — pseudo-random but consistent
+  const actLog = {};
+  const seeds = [7,4,2,6,3,5,8,3,4,7,2,5,6,3];
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(now - i*86400000);
+    const key = d.toISOString().split('T')[0];
+    actLog[key] = { questions: seeds[i]+1, notes: (seeds[i]%4)+1, games: (seeds[i]%5)+1, minutes: seeds[i]*10+30 };
+  }
+
+  const playlists = [
+    { name:'Lo-fi Study',  id:'37i9dQZF1DWWQRwui0ExPn', type:'playlist' },
+    { name:'Deep Focus',   id:'37i9dQZF1DX9sIqqvKsjEK', type:'playlist' },
+    { name:'Coding Vibes', id:'37i9dQZF1DX5trt9i14X7j', type:'playlist' },
+  ];
+
+  const sets = [
+    ['studly_account',       JSON.stringify(account)],
+    ['studly_journal',       JSON.stringify(journal)],
+    ['studly_comp_history',  JSON.stringify(compHistory)],
+    ['studly_todos',         JSON.stringify(todos)],
+    ['studly_goals',         JSON.stringify(goals)],
+    ['studly_activity_log',  JSON.stringify(actLog)],
+    ['studly_quicknote',     "Physics exam tomorrow — review: V=IR, P=IV, series vs parallel. Don't forget calculator!"],
+    ['studly_onboarded',     '1'],
+    ['studly_sbpref',        'open'],
+    ['studly_fontsize',      'medium'],
+    ['studly_accent',        '#4d9fff'],
+    ['studly_uistyle',       'default'],
+    ['studly_tabs_visited',  JSON.stringify(['home','homework','notes','study','chat','journal','todo','games','exam','calc','library','themes','settings'])],
+    ['studly_playlists',     JSON.stringify(playlists)],
+    ['hi_bubble',            '73'],
+    ['hi_scramble',          '18'],
+    ['hi_math',              '34'],
+    ['hi_typing',            '87'],
+    ['hi_reaction',          '214'],
+    ['hi_snake',             '420'],
+    ['hi_flags',             '22'],
+    ['hi_sudoku',            '950'],
+  ];
+
+  const lines = sets.map(([k, v]) =>
+    `  localStorage.setItem(${JSON.stringify(k)}, ${JSON.stringify(v)});`
+  ).join('\n');
+
+  return `(function(){
+${lines}
+  // Refresh any live UI panels if the app is already loaded
+  if(typeof updateHomeStats==='function') updateHomeStats();
+  if(typeof loadCompHistory==='function') loadCompHistory();
+  if(typeof renderJournal==='function')   renderJournal();
+  if(typeof renderTodos==='function')     renderTodos();
+  if(typeof renderAcctPage==='function')  renderAcctPage();
+  // Refresh hi score displays
+  ['bubble','scramble','math','typing','reaction','snake','flags','sudoku'].forEach(function(g){
+    var el = document.getElementById('hi-'+g);
+    var v  = localStorage.getItem('hi_'+g) || 0;
+    if (!el) return;
+    if (g==='reaction') el.textContent = v ? 'Best: '+v+' ms' : 'Best: -- ms';
+    else if (g==='sudoku')  el.textContent = parseInt(v)>0 ? 'Best score: '+v : 'Not solved yet';
+    else if (g==='typing')  el.textContent = 'Best: '+v+' WPM';
+    else el.textContent = 'Best: '+v;
+  });
+  console.log('%c✅ Veda dev data seeded! Refresh for full effect.', 'color:#00d4aa;font-weight:bold;font-size:13px;');
+  alert('✅ Veda dev data seeded!\\n\\nRefresh the page to see everything populated.');
+})();`;
+}
+
+const script = makeSeedScript();
+
+// Populate the code preview (first 300 chars is enough to show it's real)
+document.getElementById('code-preview').textContent = script.slice(0, 300) + '\n  … (click Copy all for full script)';
+
+// Wire up the bookmarklet — must be javascript: URI
+document.getElementById('bm-link').href = 'javascript:' + encodeURIComponent(script);
+
+function copyIt() {
+  navigator.clipboard.writeText(script).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copy all'; btn.classList.remove('ok'); }, 2500);
+  }).catch(() => {
+    // fallback for browsers that block clipboard in file:// context
+    const ta = document.createElement('textarea');
+    ta.value = script;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copy all'; btn.classList.remove('ok'); }, 2500);
+  });
+}
+</script>
+</body>
+</html>
